@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../core/theme/jungle_theme.dart';
 import '../../../features/catalog/data/app_repository.dart';
+import '../../../features/catalog/domain/manifest_model.dart';
 import '../../../features/downloads/domain/download_task.dart';
 import '../../../shared/widgets/glass_panel.dart';
 import '../../../shared/widgets/jungle_background.dart';
+
+final packageInfoProvider = FutureProvider<PackageInfo>((ref) {
+  return PackageInfo.fromPlatform();
+});
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -15,6 +21,8 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final apps = ref.watch(appCatalogProvider).asData?.value ?? const [];
+    final manifest = ref.watch(manifestProvider);
+    final packageInfo = ref.watch(packageInfoProvider);
     final downloads = ref.watch(downloadControllerProvider).values;
     final installed = downloads
         .where((task) => task.stage == DownloadStage.installed)
@@ -28,15 +36,16 @@ class ProfileScreen extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
             GlassPanel(
+              accentColor: JungleColors.acid,
               child: Row(
                 children: [
                   const CircleAvatar(
                     radius: 31,
-                    backgroundColor: JungleColors.amber,
+                    backgroundColor: JungleColors.ink,
                     child: Text(
                       'J',
                       style: TextStyle(
-                        color: JungleColors.night,
+                        color: JungleColors.paper,
                         fontWeight: FontWeight.w900,
                         fontSize: 28,
                       ),
@@ -48,15 +57,16 @@ class ProfileScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Guest Explorer',
+                          'Guest Explorer / 2038',
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(fontWeight: FontWeight.w900),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'No account or paid database required.',
-                          style: TextStyle(
-                            color: JungleColors.mist.withValues(alpha: 0.7),
+                          style: const TextStyle(
+                            color: JungleColors.ink,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                       ],
@@ -87,6 +97,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             GlassPanel(
+              accentColor: JungleColors.paper,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -117,11 +128,90 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
+            GlassPanel(
+              accentColor: JungleColors.volt,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Update check',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  manifest.when(
+                    data: (snapshot) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _StackRow(
+                          icon: Icons.data_object,
+                          title: 'Manifest ${snapshot.manifest.version}',
+                          body:
+                              '${_sourceLabel(snapshot.source)} source. Signature ${snapshot.isSignatureVerified ? 'verified' : 'not required for bundled fallback'}.',
+                        ),
+                        if (snapshot.etag != null)
+                          _StackRow(
+                            icon: Icons.sell_outlined,
+                            title: 'ETag',
+                            body: snapshot.etag!,
+                          ),
+                      ],
+                    ),
+                    loading: () => const LinearProgressIndicator(),
+                    error: (error, stack) => Text(
+                      error.toString(),
+                      style: const TextStyle(color: JungleColors.amber),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FilledButton.icon(
+                    onPressed: () => ref.invalidate(manifestProvider),
+                    icon: const Icon(Icons.sync),
+                    label: const Text('Refresh manifest'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            GlassPanel(
+              accentColor: JungleColors.concrete,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Device',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  packageInfo.when(
+                    data: (info) => _StackRow(
+                      icon: Icons.info_outline,
+                      title: 'jUNGLE ${info.version}+${info.buildNumber}',
+                      body: 'Guest mode. No accounts and no user collection.',
+                    ),
+                    loading: () => const LinearProgressIndicator(),
+                    error: (error, stack) => Text(error.toString()),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+String _sourceLabel(ManifestSource source) {
+  return switch (source) {
+    ManifestSource.bundled => 'Bundled',
+    ManifestSource.cached => 'Cached',
+    ManifestSource.remote => 'Remote',
+  };
 }
 
 class _StatCard extends StatelessWidget {
@@ -138,10 +228,11 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassPanel(
+      accentColor: JungleColors.paper,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: JungleColors.moss),
+          Icon(icon, color: JungleColors.ink),
           const SizedBox(height: 12),
           Text(
             value,
@@ -151,7 +242,10 @@ class _StatCard extends StatelessWidget {
           ),
           Text(
             label,
-            style: TextStyle(color: JungleColors.mist.withValues(alpha: 0.68)),
+            style: const TextStyle(
+              color: JungleColors.ink,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ],
       ),
@@ -177,7 +271,7 @@ class _StackRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: JungleColors.amber),
+          Icon(icon, color: JungleColors.ink),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -191,7 +285,8 @@ class _StackRow extends StatelessWidget {
                 Text(
                   body,
                   style: TextStyle(
-                    color: JungleColors.mist.withValues(alpha: 0.68),
+                    color: JungleColors.ink,
+                    fontWeight: FontWeight.w700,
                     height: 1.3,
                   ),
                 ),

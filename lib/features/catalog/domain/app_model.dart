@@ -4,6 +4,8 @@ class JungleAppModel {
     required this.name,
     required this.tagline,
     required this.description,
+    required this.iconUrl,
+    required this.bannerUrl,
     required this.iconGlyph,
     required this.bannerGradient,
     required this.screenshots,
@@ -16,12 +18,16 @@ class JungleAppModel {
     required this.releaseDate,
     required this.isFeatured,
     required this.tags,
+    this.model3dUrl,
+    this.changelog,
   });
 
   final String id;
   final String name;
   final String tagline;
   final String description;
+  final String iconUrl;
+  final String bannerUrl;
   final String iconGlyph;
   final List<String> bannerGradient;
   final List<String> screenshots;
@@ -34,6 +40,8 @@ class JungleAppModel {
   final DateTime releaseDate;
   final bool isFeatured;
   final List<String> tags;
+  final String? model3dUrl;
+  final String? changelog;
 
   factory JungleAppModel.fromJson(Map<String, dynamic> json) {
     return JungleAppModel(
@@ -41,6 +49,8 @@ class JungleAppModel {
       name: json['name'] as String,
       tagline: json['tagline'] as String,
       description: json['description'] as String,
+      iconUrl: (json['iconUrl'] ?? '') as String,
+      bannerUrl: (json['bannerUrl'] ?? '') as String,
       iconGlyph: json['iconGlyph'] as String,
       bannerGradient: List<String>.from(json['bannerGradient'] as List),
       screenshots: List<String>.from(json['screenshots'] as List),
@@ -53,6 +63,8 @@ class JungleAppModel {
       releaseDate: DateTime.parse(json['releaseDate'] as String),
       isFeatured: json['isFeatured'] as bool,
       tags: List<String>.from(json['tags'] as List),
+      model3dUrl: json['model3dUrl'] as String?,
+      changelog: json['changelog'] as String?,
     );
   }
 

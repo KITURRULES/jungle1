@@ -7,8 +7,9 @@ jUNGLE is a Flutter personal app store for showcasing and distributing your own 
 - Flutter with feature-first folders and Riverpod providers
 - `go_router` bottom-shell navigation and app detail routes
 - Bundled offline catalog at `assets/catalog/apps.json`
-- Optional remote manifest repository for GitHub Pages, Cloudflare Pages, Netlify, or any HTTPS static host
-- Local download queue state for the prototype
+- Optional signed remote manifest for GitHub Pages, Cloudflare Pages, Netlify, or any HTTPS static host
+- ETag-aware manifest cache with bundled fallback
+- Background APK download queue and Android install handoff
 
 ## No-Firestore Alternative
 
@@ -17,10 +18,26 @@ Use static distribution:
 1. Build APKs in each app repo.
 2. Upload APKs to GitHub Releases.
 3. Update `apps.json` with the release download URLs.
-4. Host `apps.json` on GitHub Pages or another free static host.
-5. Swap `AssetAppRepository` for `RemoteManifestAppRepository` in `lib/features/catalog/data/app_repository.dart`.
+4. Sign `apps.json` with `tool/jungle_manifest.dart`.
+5. Host `apps.json` on GitHub Pages or another free static host.
+6. Build jUNGLE with `JUNGLE_MANIFEST_URL` and `JUNGLE_MANIFEST_PUBLIC_KEY`.
 
-This avoids Firestore billing, Firebase project setup, and database security rules. The tradeoff is that ratings, reviews, accounts, and per-user sync should stay local or be added later through a free-tier backend only when you actually need them.
+This avoids Firestore billing, Firebase project setup, and database security rules. The tradeoff is that ratings, reviews, accounts, and per-user sync should stay local unless you later choose to add a backend.
+
+## Manifest Signing
+
+```bash
+/home/kingcode/development/flutter/bin/dart run tool/jungle_manifest.dart keygen
+/home/kingcode/development/flutter/bin/dart run tool/jungle_manifest.dart sign assets/catalog/apps.json <private-seed-base64> public/apps.json
+```
+
+Build with:
+
+```bash
+/home/kingcode/development/flutter/bin/flutter build apk --release \
+  --dart-define=JUNGLE_MANIFEST_URL=https://your-name.github.io/jungle/apps.json \
+  --dart-define=JUNGLE_MANIFEST_PUBLIC_KEY=<public-key-base64>
+```
 
 ## Project Structure
 

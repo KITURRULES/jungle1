@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/jungle_theme.dart';
@@ -17,6 +16,7 @@ class AppCard extends StatelessWidget {
     return GlassPanel(
       onTap: () => context.go('/apps/${app.id}'),
       padding: EdgeInsets.all(compact ? 12 : 16),
+      accentColor: compact ? JungleColors.paper : JungleColors.concrete,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,14 +35,30 @@ class AppCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
+                        fontSize: compact ? 18 : 20,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      app.category,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: JungleColors.moss,
-                        fontWeight: FontWeight.w800,
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: JungleColors.acid,
+                        border: Border.fromBorderSide(
+                          BorderSide(color: JungleColors.ink, width: 2),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 3,
+                        ),
+                        child: Text(
+                          app.category.toUpperCase(),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: JungleColors.ink,
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
                       ),
                     ),
                   ],
@@ -56,14 +72,17 @@ class AppCard extends StatelessWidget {
             maxLines: compact ? 2 : 3,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: JungleColors.mist.withValues(alpha: 0.78),
+              color: JungleColors.ink,
               height: 1.25,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 14),
+          const Divider(color: JungleColors.ink, thickness: 2, height: 2),
+          const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(Icons.star, color: JungleColors.amber, size: 17),
+              const Icon(Icons.star, color: JungleColors.ink, size: 17),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
@@ -76,16 +95,16 @@ class AppCard extends StatelessWidget {
               Text(
                 '${app.sizeMb.toStringAsFixed(1)} MB',
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: JungleColors.mist.withValues(alpha: 0.62),
-                  fontWeight: FontWeight.w700,
+                style: const TextStyle(
+                  color: JungleColors.ink,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ],
           ),
         ],
       ),
-    ).animate().fadeIn(duration: 260.ms).slideY(begin: 0.05, end: 0);
+    );
   }
 }
 
@@ -107,12 +126,12 @@ class AppIcon extends StatelessWidget {
     final icon = DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: colors),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: JungleColors.ink, width: 3),
         boxShadow: [
-          BoxShadow(
-            color: colors.last.withValues(alpha: 0.32),
-            blurRadius: 22,
-            offset: const Offset(0, 10),
+          const BoxShadow(
+            color: JungleColors.ink,
+            blurRadius: 0,
+            offset: Offset(4, 4),
           ),
         ],
       ),
@@ -122,7 +141,7 @@ class AppIcon extends StatelessWidget {
           child: Text(
             app.iconGlyph,
             style: TextStyle(
-              color: JungleColors.mist,
+              color: JungleColors.paper,
               fontSize: size * 0.48,
               fontWeight: FontWeight.w900,
             ),

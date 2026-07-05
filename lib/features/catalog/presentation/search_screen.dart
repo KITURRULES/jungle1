@@ -60,6 +60,28 @@ class SearchScreen extends ConsumerWidget {
             return ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               children: [
+                GlassPanel(
+                  accentColor: JungleColors.acid,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'LOCAL INDEX',
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(fontWeight: FontWeight.w900),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Fuzzy enough for fast discovery. No network call. No account. No paid backend.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          height: 1.25,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
                 TextField(
                   onChanged: (value) =>
                       ref.read(searchQueryProvider.notifier).setQuery(value),
@@ -97,11 +119,15 @@ class SearchScreen extends ConsumerWidget {
                 const SizedBox(height: 18),
                 if (results.isEmpty)
                   const GlassPanel(
+                    accentColor: JungleColors.warning,
                     child: Column(
                       children: [
-                        Icon(Icons.eco, size: 42, color: JungleColors.moss),
+                        Icon(Icons.block, size: 42, color: JungleColors.ink),
                         SizedBox(height: 10),
-                        Text('No matching apps in this clearing.'),
+                        Text(
+                          'NO MATCHING APPS IN THIS INDEX.',
+                          style: TextStyle(fontWeight: FontWeight.w900),
+                        ),
                       ],
                     ),
                   )

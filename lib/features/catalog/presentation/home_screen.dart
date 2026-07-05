@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +8,7 @@ import '../../../shared/widgets/glass_panel.dart';
 import '../../../shared/widgets/jungle_background.dart';
 import '../data/app_repository.dart';
 import '../domain/app_model.dart';
+import '../domain/manifest_model.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -19,14 +19,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalog = ref.watch(appCatalogProvider);
     final featured = ref.watch(featuredAppsProvider);
+    final manifest = ref.watch(manifestProvider);
 
     return JungleBackground(
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 150,
-            title: const Text('jUNGLE'),
+            expandedHeight: 176,
+            title: const Text('jUNGLE / 2038'),
             actions: [
               IconButton(
                 tooltip: 'Search',
@@ -43,6 +44,7 @@ class HomeScreen extends ConsumerWidget {
                     'The Canopy',
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.w900,
+                      fontSize: 44,
                     ),
                   ),
                 ),
@@ -52,11 +54,77 @@ class HomeScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 6, 16, 20),
-              child: Text(
-                'A private app store for your Android builds, served from a no-pay manifest.',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: JungleColors.mist.withValues(alpha: 0.74),
+              child: GlassPanel(
+                accentColor: JungleColors.acid,
+                child: Row(
+                  children: [
+                    const Icon(Icons.security, color: JungleColors.ink),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        manifest.maybeWhen(
+                          data: (snapshot) =>
+                              '${_sourceLabel(snapshot.source)} manifest ${snapshot.manifest.version}. ${snapshot.isSignatureVerified ? 'Signature verified.' : 'Bundled fallback trusted by app package.'}',
+                          orElse: () =>
+                              'Loading offline-first app catalog manifest.',
+                        ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: JungleColors.ink,
+                          height: 1.35,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final compact = constraints.maxWidth < 680;
+                  final tiles = [
+                    const _ControlTile(
+                      icon: Icons.verified_user,
+                      label: 'SIGNED',
+                      value: 'Ed25519 manifest',
+                      color: JungleColors.acid,
+                    ),
+                    const _ControlTile(
+                      icon: Icons.offline_bolt,
+                      label: 'OFFLINE',
+                      value: 'Bundled fallback',
+                      color: JungleColors.volt,
+                    ),
+                    const _ControlTile(
+                      icon: Icons.install_mobile,
+                      label: 'APK DROPS',
+                      value: 'Worker downloads',
+                      color: JungleColors.amber,
+                    ),
+                  ];
+                  if (compact) {
+                    return Column(
+                      children: [
+                        for (final tile in tiles) ...[
+                          tile,
+                          if (tile != tiles.last) const SizedBox(height: 12),
+                        ],
+                      ],
+                    );
+                  }
+                  return Row(
+                    children: [
+                      for (final tile in tiles) ...[
+                        Expanded(child: tile),
+                        if (tile != tiles.last) const SizedBox(width: 12),
+                      ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -83,11 +151,20 @@ class HomeScreen extends ConsumerWidget {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 10),
             sliver: SliverToBoxAdapter(
-              child: Text(
-                'New Growth',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+              child: Row(
+                children: [
+                  Text(
+                    'NEW GROWTH',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Divider(color: JungleColors.ink, thickness: 4),
+                  ),
+                ],
               ),
             ),
           ),
@@ -118,6 +195,14 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
+String _sourceLabel(ManifestSource source) {
+  return switch (source) {
+    ManifestSource.bundled => 'Bundled',
+    ManifestSource.cached => 'Cached',
+    ManifestSource.remote => 'Remote',
+  };
+}
+
 class _FeaturedCard extends StatelessWidget {
   const _FeaturedCard({required this.app});
 
@@ -127,6 +212,7 @@ class _FeaturedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassPanel(
       onTap: () => context.go('/apps/${app.id}'),
+      accentColor: JungleColors.volt,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -134,7 +220,7 @@ class _FeaturedCard extends StatelessWidget {
             children: [
               AppIcon(app: app, size: 64, heroEnabled: false),
               const Spacer(),
-              const Icon(Icons.auto_awesome, color: JungleColors.amber),
+              const Icon(Icons.auto_awesome, color: JungleColors.ink),
             ],
           ),
           const Spacer(),
@@ -149,7 +235,11 @@ class _FeaturedCard extends StatelessWidget {
             app.tagline,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: JungleColors.mist.withValues(alpha: 0.72)),
+            style: const TextStyle(
+              color: JungleColors.ink,
+              fontWeight: FontWeight.w800,
+              height: 1.2,
+            ),
           ),
           const SizedBox(height: 14),
           FilledButton.icon(
@@ -159,7 +249,54 @@ class _FeaturedCard extends StatelessWidget {
           ),
         ],
       ),
-    ).animate().fadeIn(duration: 360.ms).scale(begin: const Offset(0.98, 0.98));
+    );
+  }
+}
+
+class _ControlTile extends StatelessWidget {
+  const _ControlTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassPanel(
+      accentColor: color,
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Icon(icon, color: JungleColors.ink),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900),
+                ),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -173,6 +310,7 @@ class _LoadingPanel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: GlassPanel(
+        accentColor: JungleColors.concrete,
         child: Row(
           children: [
             const CircularProgressIndicator(),
@@ -195,7 +333,14 @@ class _ErrorPanel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: GlassPanel(
-        child: Text(message, style: const TextStyle(color: JungleColors.amber)),
+        accentColor: JungleColors.warning,
+        child: Text(
+          message,
+          style: const TextStyle(
+            color: JungleColors.ink,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
       ),
     );
   }

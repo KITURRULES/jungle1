@@ -26,6 +26,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) => const HomeScreen(),
                 routes: [
                   GoRoute(
+                    path: 'app/:appId',
+                    builder: (context, state) =>
+                        AppDetailScreen(appId: state.pathParameters['appId']!),
+                  ),
+                  GoRoute(
                     path: 'apps/:appId',
                     name: AppDetailScreen.routeName,
                     builder: (context, state) =>

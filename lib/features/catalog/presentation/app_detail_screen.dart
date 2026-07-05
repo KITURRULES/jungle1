@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/jungle_theme.dart';
@@ -56,6 +57,7 @@ class _DetailBody extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
           GlassPanel(
+            accentColor: JungleColors.concrete,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -75,8 +77,10 @@ class _DetailBody extends ConsumerWidget {
                           const SizedBox(height: 6),
                           Text(
                             app.tagline,
-                            style: TextStyle(
-                              color: JungleColors.mist.withValues(alpha: 0.76),
+                            style: const TextStyle(
+                              color: JungleColors.ink,
+                              fontWeight: FontWeight.w800,
+                              height: 1.25,
                             ),
                           ),
                         ],
@@ -95,6 +99,11 @@ class _DetailBody extends ConsumerWidget {
                       label: app.version,
                     ),
                     _MetaChip(
+                      icon: Icons.calendar_month,
+                      label:
+                          '${app.releaseDate.year}-${app.releaseDate.month.toString().padLeft(2, '0')}-${app.releaseDate.day.toString().padLeft(2, '0')}',
+                    ),
+                    _MetaChip(
                       icon: Icons.storage,
                       label: '${app.sizeMb.toStringAsFixed(1)} MB',
                     ),
@@ -106,11 +115,27 @@ class _DetailBody extends ConsumerWidget {
                 ),
                 const SizedBox(height: 18),
                 _DownloadButton(app: app, task: task),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    await Clipboard.setData(
+                      ClipboardData(text: 'jungle://app/${app.id}'),
+                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Deep link copied')),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.share),
+                  label: const Text('Copy deep link'),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           GlassPanel(
+            accentColor: JungleColors.paper,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -125,7 +150,48 @@ class _DetailBody extends ConsumerWidget {
                   app.description,
                   style: TextStyle(
                     height: 1.4,
-                    color: JungleColors.mist.withValues(alpha: 0.78),
+                    color: JungleColors.ink,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (app.changelog != null) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    'Changelog',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    app.changelog!,
+                    style: TextStyle(
+                      height: 1.35,
+                      color: JungleColors.ink,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          GlassPanel(
+            accentColor: JungleColors.acid,
+            child: Row(
+              children: [
+                const Icon(Icons.view_in_ar, color: JungleColors.ink),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    app.model3dUrl == null
+                        ? '3D preview asset not configured for this app yet.'
+                        : '3D preview ready: ${app.model3dUrl}',
+                    style: TextStyle(
+                      color: JungleColors.ink,
+                      height: 1.35,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                 ),
               ],
@@ -133,10 +199,11 @@ class _DetailBody extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Screenshots',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+            'SCREENSHOTS',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+              fontSize: 26,
+            ),
           ),
           const SizedBox(height: 10),
           SizedBox(
@@ -148,12 +215,15 @@ class _DetailBody extends ConsumerWidget {
               itemBuilder: (context, index) => SizedBox(
                 width: 230,
                 child: GlassPanel(
+                  accentColor: index.isEven
+                      ? JungleColors.volt
+                      : JungleColors.amber,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Icon(
                         Icons.screenshot_monitor,
-                        color: JungleColors.moss,
+                        color: JungleColors.ink,
                       ),
                       const Spacer(),
                       Text(
@@ -169,21 +239,25 @@ class _DetailBody extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           GlassPanel(
+            accentColor: JungleColors.ink,
+            shadowColor: JungleColors.warning,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Distribution',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: JungleColors.paper,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   'APK URL: ${app.downloadUrl}',
                   style: TextStyle(
-                    color: JungleColors.mist.withValues(alpha: 0.68),
+                    color: JungleColors.paper,
                     height: 1.35,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
@@ -199,7 +273,7 @@ class _DownloadButton extends ConsumerWidget {
   const _DownloadButton({required this.app, required this.task});
 
   final JungleAppModel app;
-  final DownloadTask? task;
+  final JungleDownloadTask? task;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -214,7 +288,19 @@ class _DownloadButton extends ConsumerWidget {
       );
     }
 
-    if (stage == DownloadStage.downloading) {
+    if (stage == DownloadStage.completed) {
+      return FilledButton.icon(
+        onPressed: () => controller.install(app.id),
+        icon: const Icon(Icons.install_mobile),
+        label: const Text('Install APK'),
+      );
+    }
+
+    if (stage == DownloadStage.downloading ||
+        stage == DownloadStage.queued ||
+        stage == DownloadStage.paused ||
+        stage == DownloadStage.installing) {
+      final paused = stage == DownloadStage.paused;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -224,9 +310,11 @@ class _DownloadButton extends ConsumerWidget {
             children: [
               Expanded(
                 child: FilledButton.icon(
-                  onPressed: () => controller.advance(app.id),
-                  icon: const Icon(Icons.download),
-                  label: const Text('Continue'),
+                  onPressed: paused
+                      ? () => controller.resume(app.id)
+                      : () => controller.pause(app.id),
+                  icon: Icon(paused ? Icons.play_arrow : Icons.pause),
+                  label: Text(paused ? 'Resume' : 'Pause'),
                 ),
               ),
               const SizedBox(width: 10),
@@ -242,7 +330,7 @@ class _DownloadButton extends ConsumerWidget {
     }
 
     return FilledButton.icon(
-      onPressed: () => controller.queue(app.id, app.name),
+      onPressed: () => controller.queue(app),
       icon: const Icon(Icons.download),
       label: const Text('Download APK'),
     );

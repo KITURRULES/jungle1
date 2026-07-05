@@ -1,12 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "jUNGLE app catalog manifest",
+  "title": "jUNGLE signed app catalog manifest",
   "type": "object",
-  "required": ["schemaVersion", "apps"],
+  "required": ["version", "signature", "generatedAt", "trustedDownloadHosts", "apps"],
   "properties": {
-    "schemaVersion": {
-      "type": "integer",
-      "minimum": 1
+    "version": { "type": "string", "minLength": 1 },
+    "signature": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "trustedDownloadHosts": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
     },
     "apps": {
       "type": "array",
@@ -17,6 +20,8 @@
           "name",
           "tagline",
           "description",
+          "iconUrl",
+          "bannerUrl",
           "iconGlyph",
           "bannerGradient",
           "screenshots",
@@ -35,6 +40,8 @@
           "name": { "type": "string", "minLength": 1, "maxLength": 40 },
           "tagline": { "type": "string", "minLength": 1, "maxLength": 120 },
           "description": { "type": "string", "minLength": 1, "maxLength": 1200 },
+          "iconUrl": { "type": "string" },
+          "bannerUrl": { "type": "string" },
           "iconGlyph": { "type": "string", "minLength": 1, "maxLength": 2 },
           "bannerGradient": {
             "type": "array",
@@ -57,7 +64,9 @@
           "tags": {
             "type": "array",
             "items": { "type": "string" }
-          }
+          },
+          "model3dUrl": { "type": ["string", "null"] },
+          "changelog": { "type": ["string", "null"] }
         },
         "additionalProperties": false
       }
