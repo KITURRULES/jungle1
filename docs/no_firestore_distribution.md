@@ -44,3 +44,9 @@ their ETag after verification.
 - Payment-gated access
 
 Until one of those becomes necessary, static hosting is the lower-risk path.
+
+## Release Safety Rule
+
+Do not set `distributionReady` to `true` unless the APK is release-signed and
+verified with `apksigner`. Debug-signed APKs create avoidable security warnings
+and should never be uploaded as jUNGLE release assets.

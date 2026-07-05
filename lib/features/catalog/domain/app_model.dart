@@ -18,6 +18,9 @@ class JungleAppModel {
     required this.releaseDate,
     required this.isFeatured,
     required this.tags,
+    required this.distributionReady,
+    this.distributionNote,
+    this.downloadSha256,
     this.model3dUrl,
     this.changelog,
   });
@@ -40,6 +43,9 @@ class JungleAppModel {
   final DateTime releaseDate;
   final bool isFeatured;
   final List<String> tags;
+  final bool distributionReady;
+  final String? distributionNote;
+  final String? downloadSha256;
   final String? model3dUrl;
   final String? changelog;
 
@@ -63,10 +69,18 @@ class JungleAppModel {
       releaseDate: DateTime.parse(json['releaseDate'] as String),
       isFeatured: json['isFeatured'] as bool,
       tags: List<String>.from(json['tags'] as List),
+      distributionReady: (json['distributionReady'] ?? false) as bool,
+      distributionNote: json['distributionNote'] as String?,
+      downloadSha256: json['downloadSha256'] as String?,
       model3dUrl: json['model3dUrl'] as String?,
       changelog: json['changelog'] as String?,
     );
   }
+
+  bool get hasUsableDownload =>
+      distributionReady &&
+      downloadUrl.startsWith('https://') &&
+      downloadUrl.endsWith('.apk');
 
   bool matches(String query) {
     final normalized = query.trim().toLowerCase();

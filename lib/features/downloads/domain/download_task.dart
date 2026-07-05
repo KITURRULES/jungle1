@@ -66,6 +66,9 @@ class DownloadController extends Notifier<Map<String, JungleDownloadTask>> {
   }
 
   Future<void> queue(JungleAppModel app) async {
+    if (!app.hasUsableDownload) {
+      return;
+    }
     _startListening();
     final current = state[app.id];
     if (current?.stage == DownloadStage.installed ||

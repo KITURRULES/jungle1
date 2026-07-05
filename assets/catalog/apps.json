@@ -16,7 +16,10 @@
       "iconUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/icons/fleet.png",
       "bannerUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/banners/fleet.png",
       "iconGlyph": "F",
-      "bannerGradient": ["#0D3B2E", "#2E8B78"],
+      "bannerGradient": [
+        "#0D3B2E",
+        "#2E8B78"
+      ],
       "screenshots": [
         "https://raw.githubusercontent.com/your-name/jungle-assets/main/screenshots/fleet-1.png",
         "Operations dashboard",
@@ -26,14 +29,22 @@
       "category": "Operations",
       "version": "2.4.0",
       "sizeMb": 42.8,
-      "downloadUrl": "https://github.com/your-name/jungle-releases/releases/download/fleet-2.4.0/fleet.apk",
+      "downloadUrl": "",
       "rating": 4.8,
       "reviewCount": 42,
       "releaseDate": "2026-06-28T12:00:00Z",
       "isFeatured": true,
-      "tags": ["fleet", "transport", "payments", "drivers"],
+      "tags": [
+        "fleet",
+        "transport",
+        "payments",
+        "drivers"
+      ],
       "model3dUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/3d/fleet.glb",
-      "changelog": "Owner dashboard polish, route-safe onboarding, and stronger driver profile sync."
+      "changelog": "Owner dashboard polish, route-safe onboarding, and stronger driver profile sync.",
+      "distributionReady": false,
+      "distributionNote": "Blocked from GitHub release: located APK is signed with Android Debug certificate. Rebuild with a private release keystore before publishing.",
+      "downloadSha256": null
     },
     {
       "id": "kompress",
@@ -43,7 +54,10 @@
       "iconUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/icons/kompress.png",
       "bannerUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/banners/kompress.png",
       "iconGlyph": "K",
-      "bannerGradient": ["#1A5F4A", "#D4A017"],
+      "bannerGradient": [
+        "#1A5F4A",
+        "#D4A017"
+      ],
       "screenshots": [
         "https://raw.githubusercontent.com/your-name/jungle-assets/main/screenshots/kompress-1.png",
         "Storage governor",
@@ -53,14 +67,22 @@
       "category": "Utilities",
       "version": "1.8.3",
       "sizeMb": 31.4,
-      "downloadUrl": "https://github.com/your-name/jungle-releases/releases/download/kompress-1.8.3/kompress.apk",
+      "downloadUrl": "",
       "rating": 4.6,
       "reviewCount": 31,
       "releaseDate": "2026-06-27T12:00:00Z",
       "isFeatured": true,
-      "tags": ["storage", "archive", "android", "local-first"],
+      "tags": [
+        "storage",
+        "archive",
+        "android",
+        "local-first"
+      ],
       "model3dUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/3d/kompress.glb",
-      "changelog": "Room-backed archive state, preview-before-restore flow, and Android-compliant cleanup actions."
+      "changelog": "Room-backed archive state, preview-before-restore flow, and Android-compliant cleanup actions.",
+      "distributionReady": false,
+      "distributionNote": "Release build not available. Existing APKs are debug builds or release build failed on this machine. Rebuild with a private release keystore before publishing.",
+      "downloadSha256": null
     },
     {
       "id": "the-bid",
@@ -70,7 +92,10 @@
       "iconUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/icons/the-bid.png",
       "bannerUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/banners/the-bid.png",
       "iconGlyph": "B",
-      "bannerGradient": ["#171915", "#B66B45"],
+      "bannerGradient": [
+        "#171915",
+        "#B66B45"
+      ],
       "screenshots": [
         "https://raw.githubusercontent.com/your-name/jungle-assets/main/screenshots/the-bid-1.png",
         "Live auction",
@@ -80,14 +105,21 @@
       "category": "Commerce",
       "version": "1.3.1",
       "sizeMb": 38.6,
-      "downloadUrl": "https://github.com/your-name/jungle-releases/releases/download/the-bid-1.3.1/the-bid.apk",
+      "downloadUrl": "",
       "rating": 4.5,
       "reviewCount": 24,
       "releaseDate": "2026-05-17T12:00:00Z",
       "isFeatured": false,
-      "tags": ["auction", "commerce", "android"],
+      "tags": [
+        "auction",
+        "commerce",
+        "android"
+      ],
       "model3dUrl": null,
-      "changelog": "Android-only cleanup, deposit flow polish, and stronger live bidding state."
+      "changelog": "Android-only cleanup, deposit flow polish, and stronger live bidding state.",
+      "distributionReady": false,
+      "distributionNote": "Release build not available. Existing APK is debug-only. Rebuild with a private release keystore before publishing.",
+      "downloadSha256": null
     },
     {
       "id": "shuffle",
@@ -97,7 +129,10 @@
       "iconUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/icons/shuffle.png",
       "bannerUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/banners/shuffle.png",
       "iconGlyph": "S",
-      "bannerGradient": ["#2E8B78", "#9FCB76"],
+      "bannerGradient": [
+        "#2E8B78",
+        "#9FCB76"
+      ],
       "screenshots": [
         "https://raw.githubusercontent.com/your-name/jungle-assets/main/screenshots/shuffle-1.png",
         "Discovery feed",
@@ -107,14 +142,21 @@
       "category": "Media",
       "version": "0.9.7",
       "sizeMb": 35.1,
-      "downloadUrl": "https://github.com/your-name/jungle-releases/releases/download/shuffle-0.9.7/shuffle.apk",
+      "downloadUrl": "",
       "rating": 4.4,
       "reviewCount": 18,
       "releaseDate": "2026-04-08T12:00:00Z",
       "isFeatured": false,
-      "tags": ["music", "player", "discovery"],
+      "tags": [
+        "music",
+        "player",
+        "discovery"
+      ],
       "model3dUrl": null,
-      "changelog": "Global player route, tolerant player parsing, and real seed catalog cleanup."
+      "changelog": "Global player route, tolerant player parsing, and real seed catalog cleanup.",
+      "distributionReady": false,
+      "distributionNote": "No APK artifact found in scanned project outputs. Build and sign a release APK before publishing.",
+      "downloadSha256": null
     }
   ]
 }

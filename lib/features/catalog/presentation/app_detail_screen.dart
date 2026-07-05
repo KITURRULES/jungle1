@@ -115,6 +115,17 @@ class _DetailBody extends ConsumerWidget {
                 ),
                 const SizedBox(height: 18),
                 _DownloadButton(app: app, task: task),
+                if (app.distributionNote != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    app.distributionNote!,
+                    style: const TextStyle(
+                      color: JungleColors.ink,
+                      fontWeight: FontWeight.w900,
+                      height: 1.3,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: () async {
@@ -279,6 +290,14 @@ class _DownloadButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(downloadControllerProvider.notifier);
     final stage = task?.stage;
+
+    if (!app.hasUsableDownload) {
+      return FilledButton.icon(
+        onPressed: null,
+        icon: const Icon(Icons.lock),
+        label: const Text('Release pending'),
+      );
+    }
 
     if (stage == DownloadStage.installed) {
       return FilledButton.icon(

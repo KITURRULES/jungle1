@@ -33,7 +33,8 @@
           "reviewCount",
           "releaseDate",
           "isFeatured",
-          "tags"
+          "tags",
+          "distributionReady"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
@@ -56,7 +57,7 @@
           "category": { "type": "string", "minLength": 1 },
           "version": { "type": "string", "minLength": 1 },
           "sizeMb": { "type": "number", "exclusiveMinimum": 0 },
-          "downloadUrl": { "type": "string", "format": "uri" },
+          "downloadUrl": { "type": "string" },
           "rating": { "type": "number", "minimum": 0, "maximum": 5 },
           "reviewCount": { "type": "integer", "minimum": 0 },
           "releaseDate": { "type": "string", "format": "date-time" },
@@ -64,6 +65,12 @@
           "tags": {
             "type": "array",
             "items": { "type": "string" }
+          },
+          "distributionReady": { "type": "boolean" },
+          "distributionNote": { "type": ["string", "null"] },
+          "downloadSha256": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9a-fA-F]{64}$"
           },
           "model3dUrl": { "type": ["string", "null"] },
           "changelog": { "type": ["string", "null"] }

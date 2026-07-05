@@ -170,6 +170,9 @@ class OfflineFirstAppRepository implements AppRepository {
 
   void _validateDownloadHosts(ManifestSnapshot snapshot) {
     for (final app in snapshot.apps) {
+      if (!app.distributionReady) {
+        continue;
+      }
       final trusted = security.downloadUrlIsTrusted(
         app.downloadUrl,
         manifestHosts: snapshot.manifest.trustedDownloadHosts,
