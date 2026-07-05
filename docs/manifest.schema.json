@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "jUNGLE app catalog manifest",
+  "type": "object",
+  "required": ["schemaVersion", "apps"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tagline",
+          "description",
+          "iconGlyph",
+          "bannerGradient",
+          "screenshots",
+          "category",
+          "version",
+          "sizeMb",
+          "downloadUrl",
+          "rating",
+          "reviewCount",
+          "releaseDate",
+          "isFeatured",
+          "tags"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 40 },
+          "tagline": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "description": { "type": "string", "minLength": 1, "maxLength": 1200 },
+          "iconGlyph": { "type": "string", "minLength": 1, "maxLength": 2 },
+          "bannerGradient": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 3,
+            "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+          },
+          "screenshots": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "category": { "type": "string", "minLength": 1 },
+          "version": { "type": "string", "minLength": 1 },
+          "sizeMb": { "type": "number", "exclusiveMinimum": 0 },
+          "downloadUrl": { "type": "string", "format": "uri" },
+          "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+          "reviewCount": { "type": "integer", "minimum": 0 },
+          "releaseDate": { "type": "string", "format": "date-time" },
+          "isFeatured": { "type": "boolean" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
