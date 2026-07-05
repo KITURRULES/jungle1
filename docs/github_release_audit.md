@@ -9,6 +9,7 @@ Audit date: 2026-07-05
 - Existing GitHub releases on `KITURRULES/jungle1`: none found
 - GitHub CLI: not installed on this machine
 - `GITHUB_TOKEN` / `GH_TOKEN`: not present in this shell
+- Push attempt: failed because HTTPS GitHub credentials are not available in this environment
 
 Because no authenticated GitHub API token or GitHub CLI is available, release
 assets could not be created from this environment.
@@ -18,7 +19,7 @@ assets could not be created from this environment.
 | App | Located APK | Status | Reason |
 | --- | --- | --- | --- |
 | FLEET | `/home/kingcode/Desktop/fleet/build/app/outputs/flutter-apk/app-release.apk` | Blocked | APK verifies, but certificate DN is `C=US, O=Android, CN=Android Debug`; do not publish debug-signed APKs. |
-| KOMpRESS | `/home/kingcode/Desktop/KOMpRESS/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. Release build attempt failed due Gradle daemon disappearance. |
+| KOMpRESS | `/home/kingcode/Desktop/KOMpRESS/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. Release signing config exists, but release build attempts failed due Gradle daemon disappearance. |
 | THE BID | `/home/kingcode/Desktop/THE BID/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. |
 | Shuffle | none in scanned build outputs | Blocked | No APK artifact found. |
 | jUNGLE | `/home/kingcode/Desktop/jungle/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. |
@@ -52,3 +53,40 @@ assets could not be created from this environment.
 
 The current manifest intentionally marks all apps as `distributionReady: false`
 to avoid sending users to unsafe or nonexistent APKs.
+
+## KOMpRESS Signing / Build Notes
+
+- Release keystore found: `/home/kingcode/Desktop/KOMpRESS/android/upload-keystore.jks`
+- Signing properties found: `/home/kingcode/Desktop/KOMpRESS/android/key.properties`
+- Gradle release signing block is wired to `key.properties`.
+- Temporary copy build attempts:
+  - Java 17 forced with reduced Gradle memory
+  - `flutter build apk --release`
+  - `flutter build apk --release --no-shrink`
+- Result: both attempts lost the Gradle daemon before producing an APK.
+
+Do not publish the existing KOMpRESS debug APK. The signing setup appears ready,
+but this machine could not complete the release build.
+
+## GitHub Push Status
+
+Local commit created:
+
+```text
+b23a5aa Gate unsafe APK distribution
+```
+
+Push command attempted:
+
+```bash
+git push origin master
+```
+
+Result:
+
+```text
+fatal: could not read Username for 'https://github.com': No such device or address
+```
+
+To push from this machine, configure GitHub HTTPS credentials, use SSH remotes,
+or install/authenticate GitHub CLI.
