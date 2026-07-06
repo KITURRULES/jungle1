@@ -1,7 +1,7 @@
 {
-  "version": "2026.07.06-2",
+  "version": "2026.07.06-3",
   "signature": "",
-  "generatedAt": "2026-07-06T08:56:00Z",
+  "generatedAt": "2026-07-06T07:06:00Z",
   "trustedDownloadHosts": [
     "github.com",
     "objects.githubusercontent.com",
@@ -157,6 +157,44 @@
       "distributionReady": true,
       "distributionNote": "Release-signed arm64 APK verified with apksigner. Package com.example.shuffle, version 0.9.7.",
       "downloadSha256": "144289d210becd33145df736cb02c94125da27472a65c624c3abc7b60a7e7d71"
+    },
+    {
+      "id": "kiu",
+      "name": "KIU",
+      "tagline": "Smart queue booking, maps, and institution discovery.",
+      "description": "KIU helps customers find institutions, book service slots, follow live queues, and navigate with map-based routing.",
+      "iconUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/icons/kiu.png",
+      "bannerUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/banners/kiu.png",
+      "iconGlyph": "K",
+      "bannerGradient": [
+        "#070707",
+        "#F3E7D3"
+      ],
+      "screenshots": [
+        "https://raw.githubusercontent.com/your-name/jungle-assets/main/screenshots/kiu-1.png",
+        "Institution discovery",
+        "Live queue",
+        "Map routing"
+      ],
+      "category": "Productivity",
+      "version": "0.1.0",
+      "sizeMb": 94.1,
+      "downloadUrl": "https://github.com/KITURRULES/jungle1/releases/download/kiu-0.1.0/kiu-0.1.0.apk",
+      "rating": 4.7,
+      "reviewCount": 36,
+      "releaseDate": "2026-07-06T07:06:00Z",
+      "isFeatured": true,
+      "tags": [
+        "queue",
+        "booking",
+        "maps",
+        "institutions"
+      ],
+      "model3dUrl": null,
+      "changelog": "Cream-black brand polish, auth marquee background, institution maps, live queues, and release-signed Android distribution.",
+      "distributionReady": true,
+      "distributionNote": "Release-signed arm64 APK verified with apksigner. Package com.example.kiu, version 0.1.0.",
+      "downloadSha256": "85c7177034156c4fb056a733799592615b378538674d8bf129b384c6de079dda"
     }
   ]
 }
