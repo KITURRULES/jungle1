@@ -1,6 +1,6 @@
 {
-  "version": "2026.07.06-1",
-  "generatedAt": "2026-07-06T07:20:00Z",
+  "version": "2026.07.06-2",
+  "generatedAt": "2026-07-06T08:56:00Z",
   "trustedDownloadHosts": [
     "github.com",
     "objects.githubusercontent.com",
@@ -65,8 +65,8 @@
       ],
       "category": "Utilities",
       "version": "1.8.3",
-      "sizeMb": 31.4,
-      "downloadUrl": "",
+      "sizeMb": 20.6,
+      "downloadUrl": "https://github.com/KITURRULES/jungle1/releases/download/kompress-1.8.3/kompress-1.8.3.apk",
       "rating": 4.6,
       "reviewCount": 31,
       "releaseDate": "2026-06-27T12:00:00Z",
@@ -79,9 +79,9 @@
       ],
       "model3dUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/3d/kompress.glb",
       "changelog": "Room-backed archive state, preview-before-restore flow, and Android-compliant cleanup actions.",
-      "distributionReady": false,
-      "distributionNote": "Release build not available. Existing APKs are debug builds or release build failed on this machine. Rebuild with a private release keystore before publishing.",
-      "downloadSha256": null
+      "distributionReady": true,
+      "distributionNote": "Release-signed arm64 APK verified with apksigner. Package com.kompress.kompress, version 1.8.3.",
+      "downloadSha256": "2209be7f9b7c19366f59e393a7d6250cdb6b8f6fb4b77b61ccd2011e350b2852"
     },
     {
       "id": "the-bid",
@@ -103,8 +103,8 @@
       ],
       "category": "Commerce",
       "version": "1.3.1",
-      "sizeMb": 38.6,
-      "downloadUrl": "",
+      "sizeMb": 18.4,
+      "downloadUrl": "https://github.com/KITURRULES/jungle1/releases/download/the-bid-1.3.1/the-bid-1.3.1.apk",
       "rating": 4.5,
       "reviewCount": 24,
       "releaseDate": "2026-05-17T12:00:00Z",
@@ -116,9 +116,9 @@
       ],
       "model3dUrl": null,
       "changelog": "Android-only cleanup, deposit flow polish, and stronger live bidding state.",
-      "distributionReady": false,
-      "distributionNote": "Release build not available. Existing APK is debug-only. Rebuild with a private release keystore before publishing.",
-      "downloadSha256": null
+      "distributionReady": true,
+      "distributionNote": "Release-signed arm64 APK verified with apksigner. Package com.kiturrules.thebid, version 1.3.1.",
+      "downloadSha256": "7732e024d936b207f291d59c99bc089f99005f5d1d032c262d9f9ce073b1861c"
     },
     {
       "id": "shuffle",
@@ -140,8 +140,8 @@
       ],
       "category": "Media",
       "version": "0.9.7",
-      "sizeMb": 35.1,
-      "downloadUrl": "",
+      "sizeMb": 22.8,
+      "downloadUrl": "https://github.com/KITURRULES/jungle1/releases/download/shuffle-0.9.7/shuffle-0.9.7.apk",
       "rating": 4.4,
       "reviewCount": 18,
       "releaseDate": "2026-04-08T12:00:00Z",
@@ -153,10 +153,10 @@
       ],
       "model3dUrl": null,
       "changelog": "Global player route, tolerant player parsing, and real seed catalog cleanup.",
-      "distributionReady": false,
-      "distributionNote": "No APK artifact found in scanned project outputs. Build and sign a release APK before publishing.",
-      "downloadSha256": null
+      "distributionReady": true,
+      "distributionNote": "Release-signed arm64 APK verified with apksigner. Package com.example.shuffle, version 0.9.7.",
+      "downloadSha256": "144289d210becd33145df736cb02c94125da27472a65c624c3abc7b60a7e7d71"
     }
   ],
-  "signature": "cNm5YnYXJN8VBu8axksN4YA3tyvxRyF5QXPR4N57qeLlmsdtkeeYs0DoR2PVnzdpTqMsPaIv1Qyhfp3FSMrZDA=="
+  "signature": "edbd93u24R4oWqR0T2ooF9nyBdOiWUJJ1ic/1jTHUdzdIlhimMqEIH/0XIcbHGwfy87LStjo6hTISYs+OmMDAg=="
 }
