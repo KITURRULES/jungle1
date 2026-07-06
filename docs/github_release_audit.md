@@ -18,7 +18,7 @@ assets could not be created from this environment.
 
 | App | Located APK | Status | Reason |
 | --- | --- | --- | --- |
-| FLEET | `/home/kingcode/Desktop/fleet/build/app/outputs/flutter-apk/app-release.apk` | Blocked | APK verifies, but certificate DN is `C=US, O=Android, CN=Android Debug`; do not publish debug-signed APKs. |
+| FLEET | `/home/kingcode/Desktop/jungle/release_artifacts/fleet-1.0.0.apk` | Ready to upload | Existing release build was re-signed with the FLEET release keystore and verifies with non-debug certificate `CN=FLEET Release, OU=jUNGLE, O=KITURRULES, L=Nairobi, ST=Nairobi, C=KE`. |
 | KOMpRESS | `/home/kingcode/Desktop/KOMpRESS/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. Release signing config exists, but release build attempts failed due Gradle daemon disappearance. |
 | THE BID | `/home/kingcode/Desktop/THE BID/build/app/outputs/flutter-apk/app-debug.apk` | Blocked | Debug APK only. |
 | Shuffle | none in scanned build outputs | Blocked | No APK artifact found. |
@@ -26,13 +26,13 @@ assets could not be created from this environment.
 
 ## Fleet APK Details
 
-- Path: `/home/kingcode/Desktop/fleet/build/app/outputs/flutter-apk/app-release.apk`
-- Size: `57,910,029` bytes
-- SHA-256: `e6cf65ad5268e6868d14697ba1c26d403b659cb92b2e215004ae66b375f78042`
+- Path: `/home/kingcode/Desktop/jungle/release_artifacts/fleet-1.0.0.apk`
+- Size: `57,945,064` bytes
+- SHA-256: `82aeb92713c22825ae7f0ebf549bb0e1eddbee512cb1955df992aab6d04996f1`
 - Package: `com.kingcode.fleet`
 - Version: `1.0.0` / versionCode `1`
-- Signature verification: APK Signature Scheme v2 verifies
-- Blocker: signer certificate is Android Debug
+- Signature verification: APK Signature Scheme v2 and v3 verify
+- Signer certificate DN: `CN=FLEET Release, OU=jUNGLE, O=KITURRULES, L=Nairobi, ST=Nairobi, C=KE`
 
 ## Required Before Uploading Any APK
 
@@ -51,8 +51,9 @@ assets could not be created from this environment.
    - `distributionNote`
 10. Sign the manifest with `tool/jungle_manifest.dart`.
 
-The current manifest intentionally marks all apps as `distributionReady: false`
-to avoid sending users to unsafe or nonexistent APKs.
+The current manifest marks FLEET as `distributionReady: true` and keeps all
+other apps as `distributionReady: false` to avoid sending users to unsafe or
+nonexistent APKs.
 
 ## KOMpRESS Signing / Build Notes
 
@@ -90,3 +91,33 @@ fatal: could not read Username for 'https://github.com': No such device or addre
 
 To push from this machine, configure GitHub HTTPS credentials, use SSH remotes,
 or install/authenticate GitHub CLI.
+
+## Pending GitHub CLI Commands
+
+GitHub CLI has been downloaded locally to:
+
+```text
+/tmp/gh-cli/bin/gh
+```
+
+It is not authenticated yet. After authenticating:
+
+```bash
+/tmp/gh-cli/bin/gh auth login --hostname github.com --git-protocol https --web
+```
+
+Create the FLEET release:
+
+```bash
+/tmp/gh-cli/bin/gh release create fleet-1.0.0 \
+  release_artifacts/fleet-1.0.0.apk \
+  --repo KITURRULES/jungle1 \
+  --title "FLEET 1.0.0" \
+  --notes "Release-signed FLEET APK for jUNGLE distribution. SHA-256: 82aeb92713c22825ae7f0ebf549bb0e1eddbee512cb1955df992aab6d04996f1"
+```
+
+Then push the manifest/source updates:
+
+```bash
+git push origin master
+```

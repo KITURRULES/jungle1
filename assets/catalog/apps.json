@@ -1,7 +1,7 @@
 {
-  "version": "2026.07.05-1",
+  "version": "2026.07.06-1",
   "signature": "",
-  "generatedAt": "2026-07-05T12:00:00Z",
+  "generatedAt": "2026-07-06T07:20:00Z",
   "trustedDownloadHosts": [
     "github.com",
     "objects.githubusercontent.com",
@@ -27,9 +27,9 @@
         "Vehicle detail"
       ],
       "category": "Operations",
-      "version": "2.4.0",
-      "sizeMb": 42.8,
-      "downloadUrl": "",
+      "version": "1.0.0",
+      "sizeMb": 57.9,
+      "downloadUrl": "https://github.com/KITURRULES/jungle1/releases/download/fleet-1.0.0/fleet-1.0.0.apk",
       "rating": 4.8,
       "reviewCount": 42,
       "releaseDate": "2026-06-28T12:00:00Z",
@@ -42,9 +42,9 @@
       ],
       "model3dUrl": "https://raw.githubusercontent.com/your-name/jungle-assets/main/3d/fleet.glb",
       "changelog": "Owner dashboard polish, route-safe onboarding, and stronger driver profile sync.",
-      "distributionReady": false,
-      "distributionNote": "Blocked from GitHub release: located APK is signed with Android Debug certificate. Rebuild with a private release keystore before publishing.",
-      "downloadSha256": null
+      "distributionReady": true,
+      "distributionNote": "Release-signed APK verified with apksigner. Package com.kingcode.fleet, version 1.0.0.",
+      "downloadSha256": "82aeb92713c22825ae7f0ebf549bb0e1eddbee512cb1955df992aab6d04996f1"
     },
     {
       "id": "kompress",
